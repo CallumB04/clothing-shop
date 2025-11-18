@@ -23,7 +23,8 @@ const CheckoutPageBasketTable = () => {
             </span>
             <Divider />
             {/* Table Rows */}
-            <div className="mt-1 flex flex-col gap-4">
+            {/* Max 3 items showing at a time */}
+            <div className="mt-1 flex max-h-72 flex-col gap-4 overflow-scroll">
                 {basket.map((bi) => (
                     <CheckoutPageBasketTableRow
                         key={bi.itemID + bi.variationID + bi.size}

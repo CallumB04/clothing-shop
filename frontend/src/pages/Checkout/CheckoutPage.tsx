@@ -6,13 +6,15 @@ import LightClickableText from "@/components/Text/LightClickableText";
 import DefaultSidebar from "@/layout/DefaultSidebar/DefaultSidebar";
 import { Link } from "react-router-dom";
 import CheckoutPageBasketTable from "./components/CheckoutPageBasketTable";
-import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
+import { DarkText } from "@/components/Text/DarkText";
+import { useBasket } from "@/context/BasketContext";
 
 interface CheckoutPageProps {
     isMobileSidebarOpen?: boolean;
 }
 
 const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
+    const { basket } = useBasket();
     return (
         <>
             <DefaultSidebar open={isMobileSidebarOpen} />
@@ -27,9 +29,15 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                 </Link>
                 <div className="flex w-full flex-col gap-6 xl:flex-row">
                     {/* Basket + details (left) */}
-                    <Card className="flex w-full flex-col gap-4 xl:min-w-0 xl:flex-1">
+                    <Card className="flex w-full flex-col gap-6 xl:min-w-0 xl:flex-1">
                         {/* Basket */}
-                        <PageHeader text="Your Basket" />
+                        <span className="flex items-center gap-1.5">
+                            <PageHeader text="Your Basket" />
+                            <DarkText className="text-sm">
+                                ({basket.length}{" "}
+                                {basket.length === 1 ? "item" : "items"})
+                            </DarkText>
+                        </span>
                         <CheckoutPageBasketTable />
                         <Divider />
                         {/* Details */}
