@@ -9,6 +9,13 @@ import CheckoutPageBasketTable from "./components/CheckoutPageBasketTable";
 import { DarkText } from "@/components/Text/DarkText";
 import { useBasket } from "@/context/BasketContext";
 import CheckoutEmptyBasketPage from "./CheckoutEmptyBasketPage";
+import { useQuery } from "@tanstack/react-query";
+import { calculateBasketTotal } from "@/api";
+import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
+import { useState } from "react";
+import TextInput from "@/components/TextInput/TextInput";
+import UIButton from "@/components/Button/UIButton";
+import { LightText } from "@/components/Text/LightText";
 
 interface CheckoutPageProps {
     isMobileSidebarOpen?: boolean;
@@ -16,6 +23,20 @@ interface CheckoutPageProps {
 
 const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
     const { basket } = useBasket();
+
+    const [discount, setDiscount] = useState<number>(0.1);
+    const [discountCodeInput, setDiscountCodeInput] = useState<string>("");
+
+    // Calculate basket total from API
+    const {
+        isPending: totalPending,
+        error: totalError,
+        data: totalData,
+    } = useQuery({
+        queryKey: ["totalData", basket, discount], // recalculate whenever basket or discount changes
+        queryFn: () => calculateBasketTotal(basket, discount),
+        enabled: basket.length > 0, // dont calculate when empty basket
+    });
 
     // Show redirect page if empty basket
     if (basket.length === 0) {
@@ -58,6 +79,62 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                     {/* Checkout (right) */}
                     <Card className="flex w-full flex-col gap-4 xl:w-80 xl:flex-none">
                         <PageHeader text="Checkout" />
+                        <Divider />
+                        {/* Discount Code */}
+                        <span className="flex w-full gap-2">
+                            <TextInput
+                                fullWidth
+                                placeholder="Enter discount code..."
+                                onChange={(e) => setDiscountCodeInput(e)}
+                            />
+                            <UIButton className="h-10!">Apply</UIButton>
+                        </span>
+                        <Divider />
+                        {/* Subtotals and Costs */}
+                        <div className="flex w-full flex-col gap-2">
+                            {/* Basket Total */}
+                            <span className="flex w-full items-center justify-between">
+                                <LightText className="text-xs">
+                                    Basket Total
+                                </LightText>
+                                {totalPending ? (
+                                    <LoadingSpinner className="size-3"></LoadingSpinner>
+                                ) : (
+                                    <DarkText className="text-xs font-semibold">
+                                        £{totalData?.total.toFixed(2)}
+                                    </DarkText>
+                                )}
+                            </span>
+                            {/* Discounted Total */}
+                            {totalData?.discountedTotal !==
+                                totalData?.total && (
+                                <span className="flex w-full items-center justify-between">
+                                    <LightText className="text-xs">
+                                        Discounted Total
+                                    </LightText>
+                                    <DarkText className="text-discount-text! text-xs font-semibold">
+                                        £{totalData?.discountedTotal.toFixed(2)}
+                                    </DarkText>
+                                </span>
+                            )}
+                            {/* Shipping Costs */}
+                            <span className="flex w-full items-center justify-between">
+                                <LightText className="text-xs">
+                                    Shipping
+                                </LightText>
+                                <LightText className="text-xs">
+                                    Enter details to calculate
+                                </LightText>
+                            </span>
+                        </div>
+                        <Divider />
+                        {/* Overall total */}
+                        <span className="flex w-full items-center justify-between">
+                            <LightText className="text-sm">Total</LightText>
+                            <DarkText className="text-sm font-semibold">
+                                £{totalData?.discountedTotal.toFixed(2)}
+                            </DarkText>
+                        </span>
                     </Card>
                 </div>
             </main>
