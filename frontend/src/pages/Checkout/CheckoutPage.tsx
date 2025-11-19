@@ -24,7 +24,7 @@ interface CheckoutPageProps {
 const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
     const { basket } = useBasket();
 
-    const [discount, setDiscount] = useState<number>(0.1);
+    const [discount, setDiscount] = useState<number>(0.2);
     const [discountCodeInput, setDiscountCodeInput] = useState<string>("");
 
     // Calculate basket total from API
@@ -98,7 +98,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                                     Basket Total
                                 </LightText>
                                 {totalPending ? (
-                                    <LoadingSpinner className="size-3"></LoadingSpinner>
+                                    <LoadingSpinner className="size-4!"></LoadingSpinner>
                                 ) : (
                                     <DarkText className="text-xs font-semibold">
                                         £{totalData?.total.toFixed(2)}
@@ -131,9 +131,13 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                         {/* Overall total */}
                         <span className="flex w-full items-center justify-between">
                             <LightText className="text-sm">Total</LightText>
-                            <DarkText className="text-sm font-semibold">
-                                £{totalData?.discountedTotal.toFixed(2)}
-                            </DarkText>
+                            {totalPending ? (
+                                <LoadingSpinner className="size-5!"></LoadingSpinner>
+                            ) : (
+                                <DarkText className="text-sm font-semibold">
+                                    £{totalData?.discountedTotal.toFixed(2)}
+                                </DarkText>
+                            )}
                         </span>
                     </Card>
                 </div>
