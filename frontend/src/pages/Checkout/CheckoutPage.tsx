@@ -12,10 +12,12 @@ import CheckoutEmptyBasketPage from "./CheckoutEmptyBasketPage";
 import { useQuery } from "@tanstack/react-query";
 import { calculateBasketTotal } from "@/api";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextInput from "@/components/TextInput/TextInput";
 import UIButton from "@/components/Button/UIButton";
 import { LightText } from "@/components/Text/LightText";
+import { ToastType, useToaster } from "@/context/ToasterContext";
+import { ErrorText } from "@/components/Text/ErrorText";
 
 interface CheckoutPageProps {
     isMobileSidebarOpen?: boolean;
@@ -23,8 +25,9 @@ interface CheckoutPageProps {
 
 const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
     const { basket } = useBasket();
+    const { addToast } = useToaster();
 
-    const [discount, setDiscount] = useState<number>(0.2);
+    const [discount, setDiscount] = useState<number>(0);
     const [discountCodeInput, setDiscountCodeInput] = useState<string>("");
 
     // Calculate basket total from API
@@ -37,6 +40,18 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
         queryFn: () => calculateBasketTotal(basket, discount),
         enabled: basket.length > 0, // dont calculate when empty basket
     });
+
+    // Error toast if basket calculation failed
+    useEffect(() => {
+        if (totalError) {
+            addToast(
+                "Failed to Calculate Total",
+                "Sorry, we were unable to calculate your basket total, please try again",
+                ToastType.Error,
+                5000
+            );
+        }
+    }, [totalError]);
 
     // Show redirect page if empty basket
     if (basket.length === 0) {
@@ -99,6 +114,10 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                                 </LightText>
                                 {totalPending ? (
                                     <LoadingSpinner className="size-4!"></LoadingSpinner>
+                                ) : totalError ? (
+                                    <ErrorText className="text-xs">
+                                        Failed
+                                    </ErrorText>
                                 ) : (
                                     <DarkText className="text-xs font-semibold">
                                         £{totalData?.total.toFixed(2)}
@@ -133,6 +152,10 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                             <LightText className="text-sm">Total</LightText>
                             {totalPending ? (
                                 <LoadingSpinner className="size-5!"></LoadingSpinner>
+                            ) : totalError ? (
+                                <ErrorText className="text-sm">
+                                    Failed
+                                </ErrorText>
                             ) : (
                                 <DarkText className="text-sm font-semibold">
                                     £{totalData?.discountedTotal.toFixed(2)}
