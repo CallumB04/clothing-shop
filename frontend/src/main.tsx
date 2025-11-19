@@ -4,11 +4,18 @@ import App from "./App.tsx";
 import { BasketProvider } from "./context/BasketContext.tsx";
 import { ToasterProvider } from "./context/ToasterContext.tsx";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+// Create query client for tanstack query
+const queryClient = new QueryClient();
+
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <ToasterProvider>
             <BasketProvider>
-                <App />
+                <QueryClientProvider client={queryClient}>
+                    <App />
+                </QueryClientProvider>
             </BasketProvider>
         </ToasterProvider>
     </StrictMode>
