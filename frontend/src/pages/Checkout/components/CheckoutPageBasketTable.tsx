@@ -11,11 +11,13 @@ const CheckoutPageBasketTable = () => {
             {/* Table Header */}
             <span className="flex gap-4 pl-2 text-sm font-semibold">
                 <DarkText className="w-full">Item</DarkText>
-                <DarkText className="w-32 flex-none text-center">Size</DarkText>
-                <DarkText className="w-40 flex-none text-center">
+                <DarkText className="hidden w-32 flex-none text-center lg:block">
+                    Size
+                </DarkText>
+                <DarkText className="hidden w-40 flex-none text-center md:block">
                     Quantity
                 </DarkText>
-                <DarkText className="w-36 flex-none text-center">
+                <DarkText className="hidden w-36 flex-none text-center sm:block">
                     Approx. Total
                 </DarkText>
                 {/* Empty span, column for item removal, but no header */}

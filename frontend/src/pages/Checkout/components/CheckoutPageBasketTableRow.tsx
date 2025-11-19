@@ -61,20 +61,25 @@ const CheckoutPageBasketTableRow: React.FC<CheckoutPageBasketTableRowProps> = ({
                     className="w-16 rounded"
                 />
                 <div className="flex flex-col gap-0.5">
-                    <DarkText className="font-semibold">{item?.name}</DarkText>
+                    <DarkText className="line-clamp-2 font-semibold">
+                        {item?.name}
+                    </DarkText>
                     <LightText className="text-sm font-light">
                         {itemVariation?.name}
                     </LightText>
+                    <DarkText className="text-sm font-light lg:hidden">
+                        Size: {basketItem.size}
+                    </DarkText>
                 </div>
             </span>
             {/* Size */}
-            <span className="w-32 flex-none">
+            <span className="hidden w-32 flex-none lg:block">
                 <DarkText className="text-center text-sm">
                     {basketItem.size}
                 </DarkText>
             </span>
             {/* Quantity */}
-            <span className="w-40 flex-none">
+            <span className="hidden w-40 flex-none md:block">
                 <QuantitySelector
                     onIncrement={() =>
                         addBasketItem({ ...basketItem, quantity: 1 })
@@ -88,7 +93,7 @@ const CheckoutPageBasketTableRow: React.FC<CheckoutPageBasketTableRowProps> = ({
                 />
             </span>
             {/* Total */}
-            <span className="w-36 flex-none">
+            <span className="hidden w-36 flex-none sm:block">
                 <DarkText className="text-center text-sm">
                     £
                     {item?.discountPriceGBP
