@@ -97,7 +97,7 @@ const CheckoutPageBasketTableRow: React.FC<CheckoutPageBasketTableRowProps> = ({
                 {/* Full price crossed out, if discounted */}
                 {item?.discountPriceGBP && (
                     <LightText className="text-center text-xs line-through">
-                        {item.priceGBP}
+                        £{item.priceGBP}
                     </LightText>
                 )}
                 {/* Item active price, full or discount */}
