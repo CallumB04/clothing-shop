@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import CheckoutPageBasketTable from "./components/CheckoutPageBasketTable";
 import { DarkText } from "@/components/Text/DarkText";
 import { useBasket } from "@/context/BasketContext";
+import CheckoutEmptyBasketPage from "./CheckoutEmptyBasketPage";
 
 interface CheckoutPageProps {
     isMobileSidebarOpen?: boolean;
@@ -15,6 +16,16 @@ interface CheckoutPageProps {
 
 const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
     const { basket } = useBasket();
+
+    // Show redirect page if empty basket
+    if (basket.length === 0) {
+        return (
+            <CheckoutEmptyBasketPage
+                isMobileSidebarOpen={isMobileSidebarOpen}
+            />
+        );
+    }
+
     return (
         <>
             <DefaultSidebar open={isMobileSidebarOpen} />
