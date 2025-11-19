@@ -93,8 +93,17 @@ const CheckoutPageBasketTableRow: React.FC<CheckoutPageBasketTableRowProps> = ({
                 />
             </span>
             {/* Total */}
-            <span className="hidden w-36 flex-none sm:block">
-                <DarkText className="text-center text-sm">
+            <span className="hidden w-36 flex-none flex-col sm:flex">
+                {/* Full price crossed out, if discounted */}
+                {item?.discountPriceGBP && (
+                    <LightText className="text-center text-xs line-through">
+                        {item.priceGBP}
+                    </LightText>
+                )}
+                {/* Item active price, full or discount */}
+                <DarkText
+                    className={`text-center text-sm ${item?.discountPriceGBP ? "text-discount-text!" : ""}`}
+                >
                     £
                     {item?.discountPriceGBP
                         ? (item.discountPriceGBP * basketItem.quantity).toFixed(
@@ -104,6 +113,8 @@ const CheckoutPageBasketTableRow: React.FC<CheckoutPageBasketTableRowProps> = ({
                           ? (item.priceGBP * basketItem.quantity).toFixed(2)
                           : "..."}
                 </DarkText>
+                {/* Empty div to keep full price centered if discount exists */}
+                {item?.discountPriceGBP && <div className="h-4"></div>}
             </span>
             {/* Item removal */}
             <span className="h-4.5 w-12 flex-none">
