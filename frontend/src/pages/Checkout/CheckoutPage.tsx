@@ -18,6 +18,11 @@ import UIButton from "@/components/Button/UIButton";
 import { LightText } from "@/components/Text/LightText";
 import { ToastType, useToaster } from "@/context/ToasterContext";
 import { ErrorText } from "@/components/Text/ErrorText";
+import {
+    checkDiscountCodeEligibility,
+    DiscountCodeState,
+    type ActiveDiscount,
+} from "@/api/discount";
 
 interface CheckoutPageProps {
     isMobileSidebarOpen?: boolean;
@@ -27,8 +32,11 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
     const { basket } = useBasket();
     const { addToast } = useToaster();
 
-    const [discount, setDiscount] = useState<number>(0);
     const [discountCodeInput, setDiscountCodeInput] = useState<string>("");
+    const [activeDiscount, setActiveDiscount] = useState<ActiveDiscount>({
+        code: "",
+        value: 0.0,
+    });
 
     // Calculate basket total from API
     const {
@@ -36,8 +44,8 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
         error: totalError,
         data: totalData,
     } = useQuery({
-        queryKey: ["totalData", basket, discount], // recalculate whenever basket or discount changes
-        queryFn: () => calculateBasketTotal(basket, discount),
+        queryKey: ["totalData", basket, activeDiscount], // recalculate whenever basket or discount changes
+        queryFn: () => calculateBasketTotal(basket, activeDiscount.value),
         enabled: basket.length > 0, // dont calculate when empty basket
     });
 
@@ -52,6 +60,34 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
             );
         }
     }, [totalError]);
+
+    // Check elibility of discount code, display toast and disocunt if valid
+    const handleDiscountCodeApply = async () => {
+        const resp = await checkDiscountCodeEligibility(discountCodeInput);
+        if (resp.state === DiscountCodeState.Active) {
+            setActiveDiscount({ code: discountCodeInput, value: resp.value });
+            addToast(
+                "Discount Code Applied",
+                "This discount code will be applied to your basket total at checkout",
+                ToastType.Success,
+                5000
+            );
+        } else if (resp.state === DiscountCodeState.Inactive) {
+            addToast(
+                "Discount Code Expired",
+                "This discount code is expired and can no longer be used",
+                ToastType.Error,
+                5000
+            );
+        } else if (resp.state === DiscountCodeState.Invalid) {
+            addToast(
+                "Discount Code Invalid",
+                "This discount code is invalid and cannot be used",
+                ToastType.Error,
+                5000
+            );
+        }
+    };
 
     // Show redirect page if empty basket
     if (basket.length === 0) {
@@ -102,7 +138,12 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                                 placeholder="Enter discount code..."
                                 onChange={(e) => setDiscountCodeInput(e)}
                             />
-                            <UIButton className="h-10!">Apply</UIButton>
+                            <UIButton
+                                className="h-10!"
+                                onClick={handleDiscountCodeApply}
+                            >
+                                Apply
+                            </UIButton>
                         </span>
                         <Divider />
                         {/* Subtotals and Costs */}
@@ -124,6 +165,17 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                                     </DarkText>
                                 )}
                             </span>
+                            {/* Applied Discount */}
+                            {activeDiscount.value > 0.0 && (
+                                <span className="flex w-full items-center justify-between">
+                                    <LightText className="text-xs">
+                                        Active Discount
+                                    </LightText>
+                                    <DarkText className="text-discount-text! text-xs font-semibold">
+                                        -{activeDiscount.value * 100}%
+                                    </DarkText>
+                                </span>
+                            )}
                             {/* Discounted Total */}
                             {totalData?.discountedTotal !==
                                 totalData?.total && (
