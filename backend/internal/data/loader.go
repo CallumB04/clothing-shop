@@ -10,6 +10,7 @@ import (
 )
 
 const itemsFilePath string = "data/items.json"
+const discountCodesFilePath string = "data/discount_codes.json"
 
 // Read items.json and return a slice of Item objects.
 func LoadItems() ([]models.Item, error) {
@@ -27,4 +28,22 @@ func LoadItems() ([]models.Item, error) {
 	}
 
 	return items, nil
+}
+
+// Read discount_codes.json and return discount code data.
+func LoadDiscountCounts() (*models.DiscountCodesData, error) {
+	// Read data from file.
+	data, err := os.ReadFile(discountCodesFilePath)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// Create struct for discount data and parse from json
+	var dcData models.DiscountCodesData
+	if err := json.Unmarshal(data, &dcData); err != nil {
+		return nil, err
+	}
+
+	return &dcData, nil
 }
