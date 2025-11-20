@@ -11,12 +11,12 @@ import (
 	"go.uber.org/zap"
 )
 
-type requestBody struct {
+type checkoutRequestBody struct {
 	Basket   models.Basket `json:"basket"`
 	Discount *float64      `json:"discount"` // optional discount
 }
 
-type responseBody struct {
+type checkoutResponseBody struct {
 	Total           float64 `json:"total"`
 	DiscountedTotal float64 `json:"discountedTotal"`
 }
@@ -26,7 +26,7 @@ func handleCheckout(logger *zap.Logger) http.HandlerFunc {
 		startTime := time.Now() // Record time http request was received for logging
 
 		// Decode request body into variable
-		var body requestBody
+		var body checkoutRequestBody
 		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 			util.ErrorResponse(w, http.StatusBadRequest, "invalid request", logger, r, startTime)
 			return
@@ -43,7 +43,7 @@ func handleCheckout(logger *zap.Logger) http.HandlerFunc {
 			return
 		}
 
-		response := responseBody{Total: total, DiscountedTotal: discountedTotal}
+		response := checkoutResponseBody{Total: total, DiscountedTotal: discountedTotal}
 
 		util.JSONResponse(w, http.StatusOK, response, logger, r, startTime)
 		util.LogRequest(logger, r, startTime)
