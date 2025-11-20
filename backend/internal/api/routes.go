@@ -18,6 +18,8 @@ func RegisterHandlers(logger *zap.Logger) *http.ServeMux {
 	mux.Handle("GET /items/{id}", handleGetItemByID(logger))
 	// Checkout
 	mux.Handle("POST /checkout", handleCheckout(logger))
+	// Discount Codes
+	mux.Handle("GET /discount", handleDiscountCodeCheck(logger))
 
 	// Return multiplexer to main function for starting server.
 	return mux
