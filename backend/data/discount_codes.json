@@ -1,0 +1,17 @@
+{
+    "active": [
+        {
+            "code": "SALE10",
+            "value": 0.1
+        },
+        {
+            "code": "SALE20",
+            "value": 0.2
+        },
+        {
+            "code": "XMAS2025",
+            "value": 0.15
+        }
+    ],
+    "inactive": ["SUMMER2025"]
+}
