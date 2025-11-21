@@ -14,3 +14,25 @@ func LoadItems() ([]models.Item, error) {
 		{ID: "2", Name: "Sweater", Gender: "M", Categories: []string{}, PriceGBP: 12.95, Variations: []models.ItemVariation{}},
 	}, nil
 }
+
+func LoadDiscountCodes() (*models.DiscountCodesData, error) {
+
+	return &models.DiscountCodesData{
+		Active: []models.DiscountCode{
+			{
+				Code:  "SALE10",
+				Value: 0.1,
+			},
+			{
+				Code:  "SALE20",
+				Value: 0.2,
+			},
+			{
+				Code:  "XMAS2025",
+				Value: 0.15,
+			},
+		},
+		Inactive: []string{"SUMMER2025"},
+	}, nil
+
+}
