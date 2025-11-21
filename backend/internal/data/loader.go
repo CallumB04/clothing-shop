@@ -31,7 +31,7 @@ func LoadItems() ([]models.Item, error) {
 }
 
 // Read discount_codes.json and return discount code data.
-func LoadDiscountCounts() (*models.DiscountCodesData, error) {
+func LoadDiscountCodes() (*models.DiscountCodesData, error) {
 	// Read data from file.
 	data, err := os.ReadFile(discountCodesFilePath)
 

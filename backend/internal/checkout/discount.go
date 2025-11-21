@@ -25,7 +25,7 @@ func CalculateBasketTotalAfterDiscount(price float64, discount float64) float64 
 // Check if discount code is active, inactive or doesnt exist in discount codes data
 // Returns eligibility and value (if active)
 func CheckDiscountCodeEligibility(code string) (models.DiscountCodeState, float64) {
-	dcData, err := data.LoadDiscountCounts()
+	dcData, err := data.LoadDiscountCodes()
 
 	// Return invalid if discount code data load errors
 	if err != nil {
