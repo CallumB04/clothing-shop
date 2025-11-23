@@ -61,7 +61,7 @@ const Footer = () => {
                 </div>
                 <TextInput
                     placeholder="Enter your email here..."
-                    className="placeholder-light-text h-11 w-full text-white sm:w-80"
+                    className="placeholder-light-text focus:border-input-border! h-11 w-full text-white sm:w-80"
                     ref={newsletterEmailInput}
                     onChange={(e) => setEmail(e)}
                 />
