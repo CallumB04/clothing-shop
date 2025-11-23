@@ -45,7 +45,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
         data: totalData,
     } = useQuery({
         queryKey: ["totalData", basket, activeDiscount], // recalculate whenever basket or discount changes
-        queryFn: () => calculateBasketTotal(basket, activeDiscount.value),
+        queryFn: () => calculateBasketTotal(basket, activeDiscount.code),
         enabled: basket.length > 0, // dont calculate when empty basket
     });
 

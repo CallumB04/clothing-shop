@@ -8,12 +8,12 @@ export interface BasketTotal {
 
 export const calculateBasketTotal = async (
     basket: Basket,
-    discount?: number
+    discountCode?: string
 ): Promise<BasketTotal | undefined> => {
     try {
         const resp = await axios.post<BasketTotal>("/checkout", {
             basket,
-            discount,
+            discountCode,
         });
         return resp.data;
     } catch (err) {

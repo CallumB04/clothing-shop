@@ -12,8 +12,8 @@ import (
 )
 
 type checkoutRequestBody struct {
-	Basket   models.Basket `json:"basket"`
-	Discount *float64      `json:"discount"` // optional discount
+	Basket       models.Basket `json:"basket"`
+	DiscountCode string        `json:"discountCode"` // optional discount
 }
 
 type checkoutResponseBody struct {
@@ -34,10 +34,13 @@ func handleCheckout(logger *zap.Logger) http.HandlerFunc {
 
 		// Extract fields from request body
 		basket := body.Basket
-		discount := body.Discount
+		discountCode := body.DiscountCode
+
+		// Check discount value of discount code
+		_, discount := checkout.CheckDiscountCodeEligibility(discountCode)
 
 		// Calculate basket price, optional discount
-		total, discountedTotal, err := checkout.CalculateBasketTotal(basket, discount)
+		total, discountedTotal, err := checkout.CalculateBasketTotal(basket, &discount)
 		if err != nil {
 			util.ErrorResponse(w, http.StatusInternalServerError, "failed to calculate total", logger, r, startTime)
 			return
