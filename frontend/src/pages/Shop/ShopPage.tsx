@@ -16,7 +16,6 @@ import NotFoundText from "@/components/NotFoundText/NotFoundText";
 import RedirectButton from "@/components/Button/RedirectButton";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import usePageTitle from "@/hooks/usePageTitle/usePageTitle";
-
 interface ShopPageProps {
     isMobileSidebarOpen: boolean;
 }
@@ -32,6 +31,23 @@ const ShopPage: React.FC<ShopPageProps> = ({ isMobileSidebarOpen }) => {
     const [currentPreviewItem, setCurrentPreviewItem] = useState<Item | null>(
         null
     );
+
+    // Sidebar filters
+    // This filtering will be on the frontend, since will be fast changing and no need to refetch every time
+    const [minPrice, setMinPrice] = useState<number>(0);
+    const [maxPrice, setMaxPrice] = useState<number>(99.99);
+    const [searchQuery, setSearchQuery] = useState<string>("");
+
+    const isItemWithinFilters = (item: Item) => {
+        const price = item.discountPriceGBP
+            ? item.discountPriceGBP
+            : item.priceGBP;
+        return (
+            price > minPrice &&
+            price < maxPrice &&
+            item.name.toUpperCase().includes(searchQuery.toUpperCase())
+        );
+    };
 
     // Get gender from URL: /shop/<"mens"/"womens">
     const { gender } = useParams();
@@ -63,7 +79,8 @@ const ShopPage: React.FC<ShopPageProps> = ({ isMobileSidebarOpen }) => {
     const sortedItems = useMemo(() => {
         if (!items) return;
 
-        const arr = [...items]; // copy of items to retain the original state
+        // copy of items to retain the original state
+        const arr = [...items].filter((i) => isItemWithinFilters(i));
         switch (currentSort) {
             case "price-lh":
                 return arr.sort(
@@ -80,7 +97,7 @@ const ShopPage: React.FC<ShopPageProps> = ({ isMobileSidebarOpen }) => {
             default:
                 return arr;
         }
-    }, [items, currentSort]);
+    }, [items, currentSort, minPrice, maxPrice, searchQuery]);
 
     // If user bttempts to manually alter url, redirected back to root shop page
     if (gender && !eligibleGenders.includes(gender)) {
@@ -99,6 +116,9 @@ const ShopPage: React.FC<ShopPageProps> = ({ isMobileSidebarOpen }) => {
                 gender={gender}
                 category={category}
                 eligibleCategories={eligibleCategories}
+                setMinPrice={(e) => setMinPrice(e)}
+                setMaxPrice={(e) => setMaxPrice(e)}
+                setSearchQuery={(e) => setSearchQuery(e)}
             />
             <main className="lg:ml-sidebar-width flex flex-col gap-8 px-4 py-6 sm:py-12 lg:px-8">
                 <span className="flex w-full flex-col items-center justify-between gap-6 sm:flex-row">
