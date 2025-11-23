@@ -72,7 +72,7 @@ const PreviewPopup: React.FC<PreviewPopupProps> = ({ item, closePopup }) => {
                             className="max-w-80 sm:max-w-96"
                         />
                         {/* Item Variation Preview Colors */}
-                        <div className="flex max-w-[308px] flex-wrap items-center gap-2 sm:max-w-[274px]">
+                        <div className="flex max-w-[286px] flex-wrap items-center gap-2 sm:max-w-[258px]">
                             {item!.variations.map((variation) => (
                                 <ShopItemVariation
                                     key={variation.id}
