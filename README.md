@@ -1,13 +1,15 @@
 # clothing-shop
 
-This is an e-commerce clothing website I am building using React (frontend) and Go (backend). This is my first project using the Go programming language, and I am learning as I work on the project.
+This is a full-stack e-commerce clothing website I built using React (frontend) and Go (backend). It was my first project using Go, so I focused on exploring the language, and experimenting with different tools such as [Zap](https://github.com/uber-go/zap) for logging.
+
+> **Note**: Some product images and information were taken from Hollister, strictly for testing and development purposes. This project is not intended for commercial use.
 
 ## Installation and Setup
 
 ### Prerequisites
 
--   [Node.js](https://nodejs.org/) installed on your machine. To access `npm` commands
--   [Go](https://go.dev/) installed on your machine. To run the backend server
+-   [Node.js](https://nodejs.org/) installed on your machine (for frontend + `npm` commands)
+-   [Go](https://go.dev/) installed on your machine (for backend server)
 
 ### Setup
 
