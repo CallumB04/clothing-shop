@@ -4,6 +4,9 @@ import ShopSidebarBreadcrumbs from "./ShopSidebarBreadcrumbs";
 import SidebarItems from "../Sidebar/SidebarItems";
 import SidebarItem from "../Sidebar/SidebarItem";
 import SearchBar from "@/components/SearchBar/SearchBar";
+import Divider from "@/components/Divider/Divider";
+import TextInput from "@/components/TextInput/TextInput";
+import { DarkText } from "@/components/Text/DarkText";
 
 interface ShopSidebarProps {
     isMobileSidebarOpen: boolean;
@@ -31,6 +34,7 @@ const ShopSidebar: React.FC<ShopSidebarProps> = ({
                 placeholder="Search for item..."
                 onQueryChange={(e) => setSearchQuery(e)}
             />
+            <Divider />
             <SidebarItems>
                 {eligibleCategories.map((c) => {
                     return (
@@ -48,6 +52,27 @@ const ShopSidebar: React.FC<ShopSidebarProps> = ({
                     );
                 })}
             </SidebarItems>
+            <Divider />
+            {/* Pricing filters */}
+            <span className="flex w-full items-center gap-3">
+                <span className="flex w-full items-center gap-1.5">
+                    <DarkText className="text-sm">£</DarkText>
+                    <TextInput
+                        placeholder="Min price"
+                        fullWidth
+                        onChange={(e) => setMinPrice(parseFloat(e))}
+                    />
+                </span>
+                <DarkText>-</DarkText>
+                <span className="flex w-full items-center gap-1.5">
+                    <DarkText className="text-sm">£</DarkText>
+                    <TextInput
+                        placeholder="Max price"
+                        fullWidth
+                        onChange={(e) => setMaxPrice(parseFloat(e))}
+                    />
+                </span>
+            </span>
         </Sidebar>
     );
 };

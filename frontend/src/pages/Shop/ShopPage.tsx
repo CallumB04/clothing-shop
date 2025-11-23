@@ -43,8 +43,8 @@ const ShopPage: React.FC<ShopPageProps> = ({ isMobileSidebarOpen }) => {
             ? item.discountPriceGBP
             : item.priceGBP;
         return (
-            price > minPrice &&
-            price < maxPrice &&
+            (price >= minPrice || !minPrice) &&
+            (price <= maxPrice || !maxPrice) &&
             item.name.toUpperCase().includes(searchQuery.toUpperCase())
         );
     };
