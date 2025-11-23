@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Icon from "@/components/Icon/Icon";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import { useBasket } from "@/context/BasketContext";
@@ -7,6 +7,7 @@ import NavbarLogo from "./NavbarLogo";
 import Clickable from "@/components/Clickable/Clickable";
 import { useLocation } from "react-router-dom";
 import { DarkText } from "@/components/Text/DarkText";
+import { fetchItems, type Item } from "@/api";
 
 interface NavbarProps {
     isMobileSidebarOpen: boolean;
@@ -19,8 +20,9 @@ const Navbar: React.FC<NavbarProps> = ({
     toggleMobileSidebar,
     toggleBasketDropdown,
 }) => {
-    const { basket } = useBasket();
+    const [items, setItems] = useState<Item[]>([]);
 
+    const { basket } = useBasket();
     const location = useLocation();
 
     // close mobile sidebar when changing pages
@@ -29,6 +31,16 @@ const Navbar: React.FC<NavbarProps> = ({
             toggleMobileSidebar();
         }
     }, [location]);
+
+    // Fetch all items from API for search bar dataset
+    useEffect(() => {
+        const fetchData = async (): Promise<void> => {
+            let data = await fetchItems();
+            setItems(data);
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <nav className="h-navbar-height bg-background border-b-layout-border fixed top-0 left-0 z-20 flex w-screen items-center justify-between border-b-1 px-4 xl:px-16">
@@ -60,6 +72,12 @@ const Navbar: React.FC<NavbarProps> = ({
                 <SearchBar
                     onSearch={() => alert("Searching...")}
                     className="hidden lg:flex"
+                    dataset={items.map((i) => ({
+                        title: i.name,
+                        description: i.priceGBP.toString(),
+                        previewImageURL: i.variations[0].imageURL,
+                        to: `/item/${i.id}`,
+                    }))}
                 />
                 <Clickable
                     onClick={() => toggleBasketDropdown()}
