@@ -23,6 +23,8 @@ import {
     DiscountCodeState,
     type ActiveDiscount,
 } from "@/api/discount";
+import Dropdown from "@/components/Dropdown/Dropdown";
+import Checkbox from "@/components/Checkbox/Checkbox";
 
 interface CheckoutPageProps {
     isMobileSidebarOpen?: boolean;
@@ -37,6 +39,9 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
         code: "",
         value: 0.0,
     });
+
+    const [emailOffersChecked, setEmailOffersChecked] =
+        useState<boolean>(false);
 
     // Calculate basket total from API
     const {
@@ -125,6 +130,81 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                         <Divider />
                         {/* Details */}
                         <PageHeader text="Your Details" />
+                        <div className="flex w-full gap-6">
+                            {/* Personal Details */}
+                            <div className="flex w-1/2 flex-col gap-2">
+                                <DarkText className="font-semibold">
+                                    Personal Details
+                                </DarkText>
+                                <TextInput placeholder="Email" fullWidth />
+                                <Checkbox
+                                    checked={emailOffersChecked}
+                                    label="Sign up for exclusive offers and news via this email"
+                                    className="h-10"
+                                    toggleChecked={() =>
+                                        setEmailOffersChecked((prev) => !prev)
+                                    }
+                                />
+
+                                <span className="flex gap-2">
+                                    <TextInput
+                                        placeholder="First name"
+                                        fullWidth
+                                    />
+                                    <TextInput
+                                        placeholder="Last name"
+                                        fullWidth
+                                    />
+                                </span>
+                                <TextInput
+                                    placeholder="Phone number"
+                                    fullWidth
+                                />
+                            </div>
+                            {/* Shipping Details */}
+                            <div className="flex w-1/2 flex-col gap-2">
+                                <DarkText className="font-semibold">
+                                    Shipping Details
+                                </DarkText>
+
+                                <TextInput placeholder="Address" fullWidth />
+                                <TextInput
+                                    placeholder="Apartment, Suite, etc (optional)"
+                                    fullWidth
+                                />
+                                <TextInput
+                                    placeholder="City / Town"
+                                    fullWidth
+                                />
+                                <span className="flex w-full gap-2">
+                                    <Dropdown
+                                        options={[
+                                            {
+                                                value: "uk",
+                                                display: "United Kingdom",
+                                            },
+                                            {
+                                                value: "us",
+                                                display: "United States",
+                                            },
+                                            {
+                                                value: "fr",
+                                                display: "France",
+                                            },
+                                            {
+                                                value: "es",
+                                                display: "Spain",
+                                            },
+                                        ]}
+                                        fullWidth
+                                    />
+                                    <TextInput
+                                        placeholder="ZIP code"
+                                        fullWidth
+                                    />
+                                </span>
+                            </div>
+                        </div>
                     </Card>
 
                     {/* Checkout (right) */}
@@ -201,7 +281,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                         <Divider />
                         {/* Overall total */}
                         <span className="flex w-full items-center justify-between">
-                            <LightText className="text-sm">Total</LightText>
+                            <LightText className="text-xs">Total</LightText>
                             {totalPending ? (
                                 <LoadingSpinner className="size-5!"></LoadingSpinner>
                             ) : totalError ? (
@@ -209,7 +289,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                                     Failed
                                 </ErrorText>
                             ) : (
-                                <DarkText className="text-sm font-semibold">
+                                <DarkText className="font-semibold">
                                     £{totalData?.discountedTotal.toFixed(2)}
                                 </DarkText>
                             )}
