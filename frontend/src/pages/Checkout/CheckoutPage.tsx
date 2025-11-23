@@ -12,7 +12,7 @@ import CheckoutEmptyBasketPage from "./CheckoutEmptyBasketPage";
 import { useQuery } from "@tanstack/react-query";
 import { calculateBasketTotal } from "@/api";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import TextInput from "@/components/TextInput/TextInput";
 import UIButton from "@/components/Button/UIButton";
 import { LightText } from "@/components/Text/LightText";
@@ -41,8 +41,19 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
         value: 0.0,
     });
 
+    // Details input states
+    const [emailInput, setEmailInput] = useState<string>("");
+    const [fnameInput, setFnameInput] = useState<string>("");
+    const [lnameInput, setLnameInput] = useState<string>("");
     const [emailOffersChecked, setEmailOffersChecked] =
         useState<boolean>(false);
+    const [phoneInput, setPhoneInput] = useState<string>("");
+
+    const [addressInput, setAddressInput] = useState<string>("");
+    const [apartmentInput, setApartmentInput] = useState<string>("");
+    const [cityInput, setCityInput] = useState<string>("");
+    const [countryInput, setCountryInput] = useState<string>("uk");
+    const [zipInput, setZipInput] = useState<string>("");
 
     // Calculate basket total from API
     const {
@@ -66,6 +77,27 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
             );
         }
     }, [totalError]);
+
+    // Check if all required inputs exist, to allow for continue to payment
+    const continuePaymentIneligible = useMemo(() => {
+        return [
+            emailInput,
+            fnameInput,
+            lnameInput,
+            addressInput,
+            cityInput,
+            countryInput,
+            zipInput,
+        ].includes("");
+    }, [
+        emailInput,
+        fnameInput,
+        lnameInput,
+        addressInput,
+        cityInput,
+        countryInput,
+        zipInput,
+    ]);
 
     // Check elibility of discount code, display toast and disocunt if valid
     const handleDiscountCodeApply = async () => {
@@ -138,13 +170,17 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                         <Divider />
                         {/* Details */}
                         <PageHeader text="Your Details" />
-                        <div className="flex w-full gap-6">
+                        <div className="flex w-full flex-col gap-6 md:flex-row">
                             {/* Personal Details */}
-                            <div className="flex w-1/2 flex-col gap-2">
+                            <div className="flex w-full flex-col gap-2 md:w-1/2">
                                 <DarkText className="font-semibold">
                                     Personal Details
                                 </DarkText>
-                                <TextInput placeholder="Email" fullWidth />
+                                <TextInput
+                                    placeholder="Email"
+                                    fullWidth
+                                    onChange={(e) => setEmailInput(e)}
+                                />
                                 <Checkbox
                                     checked={emailOffersChecked}
                                     label="Sign up for exclusive offers and news via this email"
@@ -158,31 +194,40 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                                     <TextInput
                                         placeholder="First name"
                                         fullWidth
+                                        onChange={(e) => setFnameInput(e)}
                                     />
                                     <TextInput
                                         placeholder="Last name"
                                         fullWidth
+                                        onChange={(e) => setLnameInput(e)}
                                     />
                                 </span>
                                 <TextInput
-                                    placeholder="Phone number"
+                                    placeholder="Phone number (optional)"
                                     fullWidth
+                                    onChange={(e) => setPhoneInput(e)}
                                 />
                             </div>
                             {/* Shipping Details */}
-                            <div className="flex w-1/2 flex-col gap-2">
+                            <div className="flex w-full flex-col gap-2 md:w-1/2">
                                 <DarkText className="font-semibold">
                                     Shipping Details
                                 </DarkText>
 
-                                <TextInput placeholder="Address" fullWidth />
                                 <TextInput
-                                    placeholder="Apartment, Suite, etc (optional)"
+                                    placeholder="Address"
                                     fullWidth
+                                    onChange={(e) => setAddressInput(e)}
+                                />
+                                <TextInput
+                                    placeholder="Apartment, Suite, etc. (optional)"
+                                    fullWidth
+                                    onChange={(e) => setApartmentInput(e)}
                                 />
                                 <TextInput
                                     placeholder="City / Town"
                                     fullWidth
+                                    onChange={(e) => setCityInput(e)}
                                 />
                                 <span className="flex w-full gap-2">
                                     <Dropdown
@@ -205,10 +250,12 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                                             },
                                         ]}
                                         fullWidth
+                                        onChange={(e) => setCountryInput(e)}
                                     />
                                     <TextInput
                                         placeholder="ZIP code"
                                         fullWidth
+                                        onChange={(e) => setZipInput(e)}
                                     />
                                 </span>
                             </div>
@@ -305,6 +352,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                         <PrimaryButton
                             className="mt-4 w-full text-sm"
                             onClick={handleContinue}
+                            disabled={continuePaymentIneligible}
                         >
                             Continue to Payment
                             <Icon
