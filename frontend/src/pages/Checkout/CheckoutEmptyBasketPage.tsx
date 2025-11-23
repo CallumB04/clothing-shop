@@ -1,6 +1,7 @@
 import RedirectButton from "@/components/Button/RedirectButton";
 import { DarkText } from "@/components/Text/DarkText";
 import { LightText } from "@/components/Text/LightText";
+import usePageTitle from "@/hooks/usePageTitle/usePageTitle";
 import DefaultSidebar from "@/layout/DefaultSidebar/DefaultSidebar";
 
 interface CheckoutEmptyBasketPageProps {
@@ -10,6 +11,7 @@ interface CheckoutEmptyBasketPageProps {
 const CheckoutEmptyBasketPage: React.FC<CheckoutEmptyBasketPageProps> = ({
     isMobileSidebarOpen,
 }) => {
+    usePageTitle("Empty Basket - Clothing Shop");
     return (
         <>
             <DefaultSidebar open={isMobileSidebarOpen} />

@@ -1,12 +1,14 @@
 import DefaultSidebar from "@/layout/DefaultSidebar/DefaultSidebar";
 import { DarkText } from "@/components/Text/DarkText";
 import HomePageNavigator from "./components/HomePageNavigator";
+import usePageTitle from "@/hooks/usePageTitle/usePageTitle";
 
 interface HomePageProps {
     isMobileSidebarOpen?: boolean;
 }
 
 const HomePage: React.FC<HomePageProps> = ({ isMobileSidebarOpen }) => {
+    usePageTitle("Home - Clothing Shop");
     return (
         <>
             <DefaultSidebar open={isMobileSidebarOpen} />

@@ -22,6 +22,7 @@ import SizeGuidePopup from "@/components/SizeGuidePopup/SizeGuidePopup";
 import Summary from "@/components/Summary/Summary";
 import TextInput from "@/components/TextInput/TextInput";
 import UIButton from "@/components/Button/UIButton";
+import usePageTitle from "@/hooks/usePageTitle/usePageTitle";
 interface ItemPageProps {
     isMobileSidebarOpen?: boolean;
 }
@@ -45,6 +46,8 @@ const ItemPage: React.FC<ItemPageProps> = ({ isMobileSidebarOpen }) => {
     const { basket, addBasketItem, removeBasketItem } = useBasket();
 
     const { id } = useParams(); // get item id from url
+
+    usePageTitle(`${item?.name} - Clothing Shop`);
 
     // fetching item using id in url
     useEffect(() => {

@@ -15,6 +15,7 @@ import PreviewPopup from "./components/PreviewPopup/PreviewPopup";
 import NotFoundText from "@/components/NotFoundText/NotFoundText";
 import RedirectButton from "@/components/Button/RedirectButton";
 import Dropdown from "@/components/Dropdown/Dropdown";
+import usePageTitle from "@/hooks/usePageTitle/usePageTitle";
 
 interface ShopPageProps {
     isMobileSidebarOpen: boolean;
@@ -34,6 +35,10 @@ const ShopPage: React.FC<ShopPageProps> = ({ isMobileSidebarOpen }) => {
 
     // Get gender from URL: /shop/<"mens"/"womens">
     const { gender } = useParams();
+
+    usePageTitle(
+        `Shop ${gender ? addApostropheToGender(gender) : "All"} - Clothing Shop`
+    );
 
     // Get category from URL params: ?category=<category>
     const [searchParams] = useSearchParams();

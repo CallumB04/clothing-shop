@@ -27,6 +27,7 @@ import Dropdown from "@/components/Dropdown/Dropdown";
 import Checkbox from "@/components/Checkbox/Checkbox";
 import PrimaryButton from "@/components/Button/PrimaryButton";
 import CheckoutCompletePage from "./CheckoutCompletePage";
+import usePageTitle from "@/hooks/usePageTitle/usePageTitle";
 
 interface CheckoutPageProps {
     isMobileSidebarOpen?: boolean;
@@ -35,6 +36,7 @@ interface CheckoutPageProps {
 const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
     const { basket, clearBasket } = useBasket();
     const { addToast } = useToaster();
+    usePageTitle("Checkout - Clothing Shop");
 
     // if order was just completed, to show different page
     const [orderComplete, setOrderComplete] = useState<boolean>(false);

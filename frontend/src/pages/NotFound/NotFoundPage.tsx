@@ -1,6 +1,7 @@
 import RedirectButton from "@/components/Button/RedirectButton";
 import { DarkText } from "@/components/Text/DarkText";
 import { LightText } from "@/components/Text/LightText";
+import usePageTitle from "@/hooks/usePageTitle/usePageTitle";
 import DefaultSidebar from "@/layout/DefaultSidebar/DefaultSidebar";
 
 interface NotFoundPageProps {
@@ -8,6 +9,7 @@ interface NotFoundPageProps {
 }
 
 const NotFoundPage: React.FC<NotFoundPageProps> = ({ isMobileSidebarOpen }) => {
+    usePageTitle("Page not Found - Clothing Shop");
     return (
         <>
             <DefaultSidebar open={isMobileSidebarOpen} />
