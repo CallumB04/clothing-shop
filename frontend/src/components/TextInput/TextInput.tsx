@@ -25,7 +25,7 @@ const TextInput: React.FC<TextInputProps> = ({
         <input
             type="text"
             placeholder={placeholder}
-            className={`border-input-border text-charcoal font-primary flex h-10 rounded-md border-1 px-4 text-sm outline-none ${fullWidth ? "w-full" : "w-56"} ${className}`}
+            className={`border-input-border text-charcoal font-primary focus:border-charcoal flex h-10 rounded-md border-1 px-4 text-sm transition-colors duration-300 outline-none ${fullWidth ? "w-full" : "w-56"} ${className}`}
             onChange={(e) => handleChange(e.target.value)}
             ref={ref}
         />
