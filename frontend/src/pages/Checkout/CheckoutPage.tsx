@@ -4,7 +4,7 @@ import Icon from "@/components/Icon/Icon";
 import PageHeader from "@/components/PageHeader/PageHeader";
 import LightClickableText from "@/components/Text/LightClickableText";
 import DefaultSidebar from "@/layout/DefaultSidebar/DefaultSidebar";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import CheckoutPageBasketTable from "./components/CheckoutPageBasketTable";
 import { DarkText } from "@/components/Text/DarkText";
 import { useBasket } from "@/context/BasketContext";
@@ -26,14 +26,18 @@ import {
 import Dropdown from "@/components/Dropdown/Dropdown";
 import Checkbox from "@/components/Checkbox/Checkbox";
 import PrimaryButton from "@/components/Button/PrimaryButton";
+import CheckoutCompletePage from "./CheckoutCompletePage";
 
 interface CheckoutPageProps {
     isMobileSidebarOpen?: boolean;
 }
 
 const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
-    const { basket } = useBasket();
+    const { basket, clearBasket } = useBasket();
     const { addToast } = useToaster();
+
+    // if order was just completed, to show different page
+    const [orderComplete, setOrderComplete] = useState<boolean>(false);
 
     const [discountCodeInput, setDiscountCodeInput] = useState<string>("");
     const [activeDiscount, setActiveDiscount] = useState<ActiveDiscount>({
@@ -129,10 +133,25 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
 
     const handleContinue = async () => {
         const resp = await calculateBasketTotal(basket, activeDiscount.code);
-        if (resp) {
+        if (resp && resp.discountedTotal > 0.0) {
+            addToast(
+                "Order Complete",
+                "You will receive an email soon with further details",
+                ToastType.Success,
+                0
+            );
+            clearBasket();
             alert("Paid £" + resp.discountedTotal.toFixed(2));
+            setOrderComplete(true);
         }
     };
+
+    // Show order completed page if order was just completed
+    if (orderComplete) {
+        return (
+            <CheckoutCompletePage isMobileSidebarOpen={isMobileSidebarOpen} />
+        );
+    }
 
     // Show redirect page if empty basket
     if (basket.length === 0) {
