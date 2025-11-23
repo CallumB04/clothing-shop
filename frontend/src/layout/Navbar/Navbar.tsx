@@ -70,7 +70,6 @@ const Navbar: React.FC<NavbarProps> = ({
             <span className="flex items-center gap-6">
                 {/* Search bar hidden on Small screen */}
                 <SearchBar
-                    onSearch={() => alert("Searching...")}
                     className="hidden lg:flex"
                     dataset={items.map((i) => ({
                         title: i.name,
