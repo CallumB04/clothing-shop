@@ -1,6 +1,7 @@
 [
     {
         "id": "0",
+        "slug": "icon-crew-t-shirt",
         "name": "Icon Crew T-Shirt",
         "gender": "M",
         "categories": ["new", "tops"],
@@ -62,6 +63,7 @@
     },
     {
         "id": "1",
+        "slug": "baggs-jeans",
         "name": "Baggy Jeans",
         "gender": "M",
         "categories": ["new", "bottoms"],
@@ -287,6 +289,7 @@
     },
     {
         "id": "2",
+        "slug": "baggy-icon-sweatpants",
         "name": "Baggy Icon Sweatpants",
         "gender": "M",
         "categories": ["offers", "bottoms"],
@@ -377,6 +380,7 @@
     },
     {
         "id": "3",
+        "slug": "boxy-washed-hoodie",
         "name": "Boxy Washed Hoodie",
         "gender": "M",
         "categories": ["hoodies"],
@@ -414,6 +418,7 @@
     },
     {
         "id": "4",
+        "slug": "icon-henley",
         "name": "Icon Henley",
         "gender": "W",
         "categories": ["tops", "new"],
@@ -451,6 +456,7 @@
     },
     {
         "id": "5",
+        "slug": "button-through-poplin-shirt",
         "name": "Button-Through Poplin Shirt",
         "gender": "W",
         "categories": ["tops", "offers"],
@@ -489,6 +495,7 @@
     },
     {
         "id": "6",
+        "slug": "comfy-cloud-foldover-off-the-shoulder-sweater",
         "name": "Comfy Cloud Foldover Off-the-Shoulder Sweater",
         "gender": "W",
         "categories": ["sweaters", "offers"],
