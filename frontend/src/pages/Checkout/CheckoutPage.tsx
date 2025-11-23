@@ -25,6 +25,7 @@ import {
 } from "@/api/discount";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import Checkbox from "@/components/Checkbox/Checkbox";
+import PrimaryButton from "@/components/Button/PrimaryButton";
 
 interface CheckoutPageProps {
     isMobileSidebarOpen?: boolean;
@@ -91,6 +92,13 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                 ToastType.Error,
                 5000
             );
+        }
+    };
+
+    const handleContinue = async () => {
+        const resp = await calculateBasketTotal(basket, activeDiscount.code);
+        if (resp) {
+            alert("Paid £" + resp.discountedTotal.toFixed(2));
         }
     };
 
@@ -294,6 +302,16 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ isMobileSidebarOpen }) => {
                                 </DarkText>
                             )}
                         </span>
+                        <PrimaryButton
+                            className="mt-4 w-full text-sm"
+                            onClick={handleContinue}
+                        >
+                            Continue to Payment
+                            <Icon
+                                icon="arrow_right_alt"
+                                className="text-white"
+                            />
+                        </PrimaryButton>
                     </Card>
                 </div>
             </main>
