@@ -13,7 +13,7 @@ const ClearBasketPopup: React.FC<ClearBasketPopupProps> = ({ closePopup }) => {
     const { clearBasket } = useBasket();
 
     const handleClear = () => {
-        clearBasket();
+        clearBasket(true);
         closePopup();
     };
 

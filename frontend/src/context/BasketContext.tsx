@@ -6,7 +6,7 @@ type BasketContextType = {
     basket: Basket;
     addBasketItem: (item: BasketItem, showToast?: boolean) => void;
     removeBasketItem: (item: BasketItem, showToast?: boolean) => void;
-    clearBasket: () => void;
+    clearBasket: (showToast?: boolean) => void;
 };
 
 const BasketContext = createContext<BasketContextType | undefined>(undefined);
@@ -97,14 +97,16 @@ export const BasketProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
-    const clearBasket = () => {
+    const clearBasket = (showToast?: boolean) => {
         setBasket([]);
-        addToast(
-            "Basket Empty",
-            "Your basket has now been cleared",
-            ToastType.Info,
-            5000
-        );
+        if (showToast) {
+            addToast(
+                "Basket Empty",
+                "Your basket has now been cleared",
+                ToastType.Info,
+                5000
+            );
+        }
     };
 
     return (
