@@ -87,6 +87,15 @@ const ItemPage: React.FC<ItemPageProps> = ({ isMobileSidebarOpen }) => {
         setBasketItem(bi);
     });
 
+    // reset selected size when variation changes
+    useEffect(() => {
+        setSelectedSize(
+            item?.variations
+                .find((v) => v.id === selectedVariation)
+                ?.sizes.find((sz) => sz.stock > 0)?.size || ""
+        );
+    }, [selectedVariation]);
+
     // if tried to fetch item and doesnt exist, show not found page
     if (!isLoading && !item) {
         return <NotFoundPage isMobileSidebarOpen={isMobileSidebarOpen} />;
@@ -187,6 +196,21 @@ const ItemPage: React.FC<ItemPageProps> = ({ isMobileSidebarOpen }) => {
                                     <ItemPageSize
                                         key={s}
                                         size={s}
+                                        inStock={
+                                            item?.variations
+                                                .find(
+                                                    (v) =>
+                                                        v.id ===
+                                                        selectedVariation
+                                                )
+                                                ?.sizes.some(
+                                                    (sz) =>
+                                                        sz.size === s &&
+                                                        sz.stock > 0
+                                                )
+                                                ? true
+                                                : false
+                                        }
                                         selected={s === selectedSize}
                                         setSelected={() => setSelectedSize(s)}
                                     />
