@@ -20,7 +20,9 @@ const Checkbox: React.FC<CheckboxProps> = ({
             onClick={toggleChecked}
         >
             <Icon icon={checked ? "check_box" : "check_box_outline_blank"} />
-            {label && <DarkText className="text-sm">{label}</DarkText>}
+            {label && (
+                <DarkText className="line-clamp-2 text-sm">{label}</DarkText>
+            )}
         </span>
     );
 };
