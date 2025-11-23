@@ -13,7 +13,7 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
     return (
         <button
-            className={`flex h-max justify-center transition-colors duration-300 ${className} ${!disabled && "cursor-pointer"} `}
+            className={`flex h-max items-center justify-center transition-colors duration-300 ${className} ${!disabled && "cursor-pointer"} `}
             onClick={onClick}
             disabled={disabled}
         >
