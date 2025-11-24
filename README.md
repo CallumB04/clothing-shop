@@ -1,8 +1,8 @@
 # clothing-shop
 
-This is a full-stack e-commerce clothing website I built using React (frontend) and Go (backend). It was my first project using Go, so I focused on exploring the language, and experimenting with different tools such as [Zap](https://github.com/uber-go/zap) for logging.
+This is a full-stack e-commerce clothing website I built using React/TypeScript (frontend) and Go (backend). It was my first project using Go, so I focused on exploring the language, and experimenting with different tools such as [Zap](https://github.com/uber-go/zap) for logging.
 
-> **Note**: Some product images and information were taken from Hollister, strictly for testing and development purposes. This project is not intended for commercial use.
+> **Note**: Some product images and information were taken from [Hollister](https://www.hollisterco.com/shop/uk), strictly for testing and development purposes. This project is not intended for commercial use.
 
 ## Installation and Setup
 
